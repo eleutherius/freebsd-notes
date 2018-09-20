@@ -1,2 +1,2 @@
 ### Summary
-* [Get system version](posts/get-system-version.md)
+* [Build-kernel](posts/build-kernel.md)
