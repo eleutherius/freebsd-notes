@@ -1,62 +1,29 @@
 Сборка ядра
 ----
-Если вы хотите самостоятельно создать собственное ядро, вам сначала нужно установить исходный код (вы можете взять пост в качестве ссылки). Затем введите каталог конфигурации вашего аппарата:
-
-# cd / usr / src / sys / `uname -m` / conf
-
-Скопируйте новый файл конфигурации ядра:
-
-# cp GENERIC NAN_FIRST_BUILD
-Вы можете изменить новый файл конфигурации (`NAN_FIRST_BUILD`) в соответствии с вашими потребностями.
-
-Постройте ядро:
-
-# cd / usr / src
-# make buildkernel KERNCONF = "NAN_FIRST_BUILD"
-
-Как только он будет завершен, установите новый двоичный файл ядра и перезагрузите его:
-
-# make installkernel KERNCONF = "NAN_FIRST_BUILD"
-# перезагружать
-
-Проверьте версию ядра, теперь вы обнаружите, что ОС теперь использует ваше недавно построенное ядро:
-
-# uname -a
-FreeBSD FreeBSD 10.3-RELEASE-p5 FreeBSD 10.3-RELEASE-p5 # 0: Вт Июл 19 17:52:57 CST 2016 root @ FreeBSD: / usr / obj / usr / src / sys / NAN_FIRST_BUILD amd64
-
-Справка:
-[Как создать собственное ядро во FreeBSD] (https://www.youtube.com/watch?v=KVNxaKu11F0).
-
-
-Build kernel
-----
-If you want to build a custom kernel yourself, you need to install the source code firstly (you can take post as a reference). Then enter the configuration directory of your machine:  
+Если вы хотите самостоятельно создать собственное ядро, вам сначала нужно установить исходный код. Затем введите каталог конфигурации вашего аппарата:
 
 	# cd /usr/src/sys/`uname -m`/conf
 
-Copy a new kernel configuration file:  
+Скопируйте новый файл конфигурации ядра:
 
 	# cp GENERIC NAN_FIRST_BUILD
-You can modify the new configuration file (`NAN_FIRST_BUILD`) according to your needs.   
 
-Build the kernel:  
+Вы можете изменить новый файл конфигурации (`NAN_FIRST_BUILD`) в соответствии с вашими потребностями.
+
+Соберите ядро:
 
 	# cd /usr/src
 	# make buildkernel KERNCONF="NAN_FIRST_BUILD"
 
-Once it is finished, install the fresh kernel binary and reboot: 
+Как только процес будет завершен, установите новый двоичный файл ядра и перезагрузите его:
 
 	# make installkernel KERNCONF="NAN_FIRST_BUILD"
 	# reboot
 
-Check the kernel version, you will find now the OS is harnessing your newly built kernel now:  
+Проверьте версию ядра, теперь вы обнаружите, что ОС теперь использует ваше недавно собанное ядро:
 
 	# uname -a
 	FreeBSD FreeBSD 10.3-RELEASE-p5 FreeBSD 10.3-RELEASE-p5 #0: Tue Jul 19 17:52:57 CST 2016     root@FreeBSD:/usr/obj/usr/src/sys/NAN_FIRST_BUILD  amd64
 
-Reference:  
+Справка:
 [How to build a custom kernel in FreeBSD](https://www.youtube.com/watch?v=KVNxaKu11F0).
-	
-
-	
-	
