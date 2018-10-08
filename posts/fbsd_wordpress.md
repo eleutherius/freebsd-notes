@@ -1,7 +1,7 @@
 Установка Wordpress on FreeBSD
 ----
 
-﻿Разобьем наш проект на малeнькие подпункты:
+Разобьем наш проект на малeнькие подпункты:
 
 1. Подготовка среды
 
@@ -197,42 +197,25 @@ chown -R www:www ./
 
 ### Конфигурируем  PHP
 
-
-Configure PHP
-
-
 Next, we will configure our PHP-FPM service, which will be responsible for processing PHP requests sent from our web server.
-
-
-
 To start, change to the /usr/local/etc directory, where configuration files for our optional programs are stored:
-
 ```
 cd /usr/local/etc
 ```
-
 There are a number of PHP configuration files in this directory that we will want to modify. We will start with the PHP-FPM configuration file itself. Open this with sudo privileges:
-
 ```
 sudo vi php-fpm.conf
 ```
-
 Inside, we want to adjust a few different options. First, we want to configure PHP-FPM to use a Unix socket instead of a network port for communication. This is more secure for services communicating within a single server.
-
-
-
 Find the line that looks like this:
 
 ```
 listen = 127.0.0.1:9000
 ```
-
 Change this to use a socket within the /var/run directory:
-
 ```
 listen = /var/run/php-fpm.sock
 ```
-
 Next, we will configure the owner, group, and permissions set of the socket that will be created. There is a commented-out group of options that handle this configuration that looks like this:
 
 ```
@@ -240,56 +223,88 @@ Next, we will configure the owner, group, and permissions set of the socket that
 ;listen.group = www
 ;listen.mode = 0660
 ```
-
 Enable these by removing the comment marker at the beginning:
-
 ```
 listen.owner = www
 listen.group = www
 listen.mode = 0660
 ```
-
-
-
 Save and close the file when you are finished.
-
 Next, we need to create a php.ini file that will configure the general behavior of PHP. Two sample files were included that we can choose to copy to the php.ini file that PHP reads.
-
-
-
 The php.ini-production file will be closer to what we need, so we will use that one. Copy the production version over to the file PHP checks for:
 
 ```
-
 sudo cp php.ini-production php.ini
-
 ```
-
-
-
 Open the file for editing with sudo privileges:
-
 ```
-
 sudo vi php.ini
-
 ```
-
-
-
 Inside, we need to find a section that configures the cgi.fix_pathinfo behavior. It will be commented out and set to "1" by default. We need to uncomment this and set it to "0". This will prevent PHP from trying to execute parts of the path if the file that was passed in to process is not found. This could be used by malicious users to execute arbitrary code if we do not prevent this behavior.
-
-
-
 Uncomment the cig.fix_pathinfo line and set it to "0":
-
 ```
 cgi.fix_pathinfo=0
 ```
-
 Save and close the file when you are finished.
 Now that we have PHP-FPM completely configured, we can start the service by typing:
-
 sudo service php-fpm start
-
 We can now move on to configuring our MySQL instance.
+
+===========================
+===========================
+Затем мы настроим нашу службу PHP-FPM, которая будет отвечать за обработку запросов PHP, отправленных с нашего веб-сервера.
+Чтобы начать, перейдите в каталог /usr/local/etc, где хранятся файлы конфигурации:
+`` `
+cd /usr/local/etc
+`` `
+В этом каталоге есть несколько файлов конфигурации PHP, которые мы хотим изменить. Мы начнем с самого файла конфигурации PHP-FPM. Откройте это с помощью привилегий sudo:
+```
+sudo vi php-fpm.conf
+```
+Внутри мы хотим настроить несколько различных параметров. Во-первых, мы хотим настроить PHP-FPM на использование сокета Unix вместо сетевого порта для связи. Это более безопасный и быстрый способ обменивающихся данными на одном сервере.
+Найдите строку, которая выглядит так:
+
+```
+listen = 127.0.0.1:9000
+```
+Измените на это, чтобы использовать сокет в каталоге /var/run:
+```
+listen = /var/run/php-fpm.sock
+```
+Затем мы настроим права владельца, группы и разрешений сокета, который будет создан.
+Эти настроки уже есть:
+
+```
+; listen.owner = www
+; listen.group = www
+; listen.mode = 0660
+```
+Включите их, удалив комментарии в начале:
+```
+listen.owner = www
+listen.group = www
+listen.mode = 0660
+```
+Сохраните и закройте файл по завершении.
+Затем нам нужно создать файл php.ini, который будет настраивать общее поведение PHP. Были включены два файла примеров, которые мы можем выбрать для копирования в файл php.ini, который читает PHP.
+Файл php.ini-production скопируем в php.ini:
+
+```
+sudo cp php.ini-production php.ini
+```
+Откройте файл для редактирования с правами sudo:
+```
+sudo vi php.ini
+```
+Внутри нам нужно найти раздел, который настраивает поведение cgi.fix_pathinfo. Он будет закоментирован и установлен по умолчанию «1».
+Нам нужно раскомментировать это и установить его в «0». Это предотвратит попытки PHP выполнять части пути, если файл, который был передан процессу, не найден.
+Это может быть использовано злоумышленниками для выполнения произвольного кода, если мы не предотвратим это поведение.
+Раскомментируйте строку cig.fix_pathinfo и установите ее в «0»:
+```
+cgi.fix_pathinfo = 0
+```
+Сохраните и закройте файл по завершении.
+Теперь, когда мы полностью настроили PHP-FPM, мы можем запустить службу, набрав:
+```
+sudo service php-fpm start
+```
